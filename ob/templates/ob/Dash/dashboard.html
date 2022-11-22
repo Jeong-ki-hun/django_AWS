@@ -1,0 +1,276 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Street Dashboard (COPAGO)</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href="/static/css_Dash/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="/ob/map/">Copago</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Home</div>
+                            <a class="nav-link" href="/ob/shop/">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Home
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Informations</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                News
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="layout-static.html">Domestic</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Overseas</a>
+                                </nav>
+                            </div>
+                                    <!-- <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="login.html">Login</a>
+                                            <a class="nav-link" href="register.html">Register</a>
+                                            <a class="nav-link" href="password.html">Forgot Password</a>
+                                        </nav>
+                                    </div> -->
+                                    <!-- <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="401.html">401 Page</a>
+                                            <a class="nav-link" href="404.html">404 Page</a>
+                                            <a class="nav-link" href="500.html">500 Page</a>
+                                        </nav>
+                                    </div> -->
+                                </nav>
+                            </div>
+                            <!-- <div class="sb-sidenav-menu-heading">Addons</div>ㄹ
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Charts
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Tables
+                            </a> -->
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Congestion API</div>
+                        COPAGO
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">혼잡도 현황</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active"> 현재 해당 공간 내 존재하는 사람 수는 <b>{{standard_row.count}}</b> 명입니다.</li>
+                            <li class="breadcrumb-item active"> (위치 : {{standard_row.address}}) </li>
+                            
+                        </ol>
+                        
+                        <div class="row     ">
+                            
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-line me-1"></i>
+                                        시간대별 인원 수
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="lineChart" width="500" height="200"></canvas></div>
+                                            <script>
+                                            const ctx2 = document.getElementById('lineChart').getContext('2d');
+                                            const lineChart = new Chart(ctx2, {
+                                                type: 'line',
+                                                data: {
+                                                    labels: ['0시','1시','2시','3시','4시','5시','6시','7시','8시','9시','10시','11시','12시','13시','14시','15시','16시','17시','18시','19시','20시','21시','22시','23시'],
+                                                    datasets: [{
+                                                        // label: 'congestion for time',
+                                                        data: {{line_count_list}},
+                                                        backgroundColor: [
+                                                            'rgba(255, 99, 132, 0.8)',
+                                                            // 'rgba(54, 162, 235, 0.8)',
+                                                            // 'rgba(255, 206, 86, 0.8)',
+                                                            // 'rgba(75, 192, 192, 0.8)',
+                                                            // 'rgba(153, 102, 255, 0.8)',
+                                                            // 'rgba(255, 159, 64, 0.8)'
+                                                        ],
+                                                        borderColor: [
+                                                            'rgba(255, 99, 132, 1)',
+                                                            // 'rgba(54, 162, 235, 1)',
+                                                            // 'rgba(255, 206, 86, 1)',
+                                                            // 'rgba(75, 192, 192, 1)',
+                                                            // 'rgba(153, 102, 255, 1)',
+                                                            // 'rgba(255, 159, 64, 1)'
+                                                        ],
+                                                        borderWidth: 1
+                                                    }]
+                                                },
+                                                options: {
+                                                    plugins:{legend: {
+                                                        display: false
+                                                        }
+                                                    },
+                                                    scales: {
+                                                        y: {
+                                                            beginAtZero: false
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                            </script>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>
+                                        일별 인원 수
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="barChart" width="500" height="200"></canvas></div>
+                                            <script>
+                                            const ctx = document.getElementById('barChart').getContext('2d');
+                                            const barChart = new Chart(ctx, {
+                                                type: 'bar',
+                                                data: {
+                                                    labels: ['15일','14일'],
+                                                    datasets: [{
+                                                        // label: 'congestion for time',
+                                                        data: {{bar_count_list}},
+                                                        backgroundColor: [
+                                                            'rgba(255, 99, 132, 0.8)',
+                                                            'rgba(54, 162, 235, 0.8)',
+                                                            'rgba(255, 206, 86, 0.8)',
+                                                            'rgba(75, 192, 192, 0.8)',
+                                                            'rgba(153, 102, 255, 0.8)',
+                                                            'rgba(255, 159, 64, 0.8)'
+                                                        ],
+                                                        borderColor: [
+                                                            'rgba(255, 99, 132, 1)',
+                                                            'rgba(54, 162, 235, 1)',
+                                                            'rgba(255, 206, 86, 1)',
+                                                            'rgba(75, 192, 192, 1)',
+                                                            'rgba(153, 102, 255, 1)',
+                                                            'rgba(255, 159, 64, 1)'
+                                                        ],
+                                                        borderWidth: 1
+                                                    }]
+                                                },
+                                                options: {
+                                                    plugins:{
+                                                        legend:{
+                                                            display: false
+                                                        }
+                                                    },
+                                                    scales: {
+                                                        y: {
+                                                            beginAtZero: true
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                            </script>
+                                    
+                                </div>
+                            </div>        
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                DataTable
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                        <tr>
+                                            <th>Index </th>
+                                            <th>주소</th>
+                                            <th>유동인구수</th>
+                                            <th>시간</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Index </th>
+                                            <th>주소</th>
+                                            <th>유동인구수</th>
+                                            <th>시간</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for i in rest %}
+                                        <tr>
+                                            <td>{{i.id}}</td>
+                                            <td>{{i.address}}</td>
+                                            <td>{{i.count}}</td>
+                                            <td>{{i.time}}</td>
+
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; COPAGO Website 2022</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="/static/js_Dash/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="/static/assets_Dash/demo/chart-area-demo.js"></script>
+        <script src="/static/assets_Dash/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+        <script src="/static/js_Dash/datatables-simple-demo.js"></script>
+    </body>
+</html>

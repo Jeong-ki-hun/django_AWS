@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>혼잡도 제공 서비스</title>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/static/css/styles.css" rel="stylesheet" />
+        <!-- Core theme JS-->
+        <script src="/static/js/scripts.js"></script>
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+            <div class="container px-4">
+                <a class="navbar-brand" href="{% url 'shop_list' %}">혼잡도 제공 서비스</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                        <form class="d-flex" action="{% url 'shop_list' %}" method="post" role="search">
+                            {% csrf_token %}
+                            <input class="form-control me-2" type="search" placeholder="Search" name="search" aria-label="Search">
+                            <button class="btn btn-outline-light" type="submit">Search</button>
+                        </form>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header-->
+        <header class="bg-secondary bg-gradient text-white">
+            <div class="container px-4 text-center">
+                <h1 class="fw-bolder"><head>
+                    <ul>매장 리스트</ul>
+                </head> </h1>
+                <h4>혼잡도를 한 눈에 확인하고 스케쥴을 조정해보자!</h3>
+            </div>
+        </header>
+        <!-- About section-->
+        <section class="bg-light" id="about">
+            <div class="container px-4">
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-8">
+                        <ul>
+                            {% for i in page_obj %}
+                            <div class="card bg-primary-100 mb-3 shadow p-3 mb-5 bg-body rounded">
+                                <img src={{i.image}} style="width:775px; height:300px;" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title"><strong>{{i.name}}</strong></h3>
+                                  <p class="card-text"><strong>{{i.food_name}}</strong>, {{i.address}}</p>
+
+                                  {% if i.status == '혼잡' %}
+                                  <div class="progress">
+                                    <div class="progress-bar bg-danger" role="progressbar" aria-label="Danger example" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                                  <p class="card-text text-danger"><strong>혼잡도 상태 : {{i.status}}</strong></p>
+                                  <a href="/ob/shop/congestion/" class="btn btn-danger">자세히</a>
+    
+                                  {% elif i.status == '주의' %}
+                                  <div class="progress">
+                                    <div class="progress-bar bg-warning" role="progressbar" aria-label="Warning example" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                                  <p class="card-text text-warning"><strong>혼잡도 상태 : {{i.status}}</strong></p>
+                                  <a href="/ob/shop/congestion/" class="btn btn-warning">자세히</a>
+
+                                  {% elif i.status == '보통' %}
+                                  <div class="progress">
+                                    <div class="progress-bar bg-primary" role="progressbar" aria-label="Info example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                                  <p class="card-text text-primary"><strong>혼잡도 상태 : {{i.status}}</strong></p>
+                                  <a href="/ob/shop/congestion/" class="btn btn-primary">자세히</a>
+
+                                  {% else %}
+                                  <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" aria-label="Success example" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                                  <p class="card-text text-success"><strong>혼잡도 상태 : {{i.status}}</strong></p>
+                                  <a href="/ob/shop/congestion/" class="btn btn-success">자세히</a>
+                                  {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </ul>
+                        <div id="paging">
+                            <ul class="pagination justify-content-center" style="margin-top: 2rem;">
+                                <!-- 이전페이지 -->
+                                {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?&page={{ page_obj.previous_page_number }}">이전</a>
+                                    <!-- href로 뎁스 설정 -->
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+                                </li>
+                                {% endif %}
+                                <!-- 페이지리스트 -->
+                                {% for page_number in page_obj.paginator.page_range %}
+                                {% if page_number == page_obj.number %}
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" href="?&page={{ page_number }}">{{ page_number }}</a>
+                                </li>
+                                {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?&page={{ page_number }}">{{ page_number }}</a>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                                <!-- 다음페이지 -->
+                                {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?&page={{ page_obj.next_page_number }}">다음</a>
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container px-4"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
+        </footer>
+    </body>
+</html>
