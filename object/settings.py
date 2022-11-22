@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-3xe1^nejw5br2t-c*r_qm(52@y=71f6*hoe#xl=x)8f4_!$((&
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '.ap-northeast-2.compute.amazonaws.com'
+    #'.ap-northeast-2.compute.amazonaws.com'
 ]
 
 
@@ -124,9 +124,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = (
-    os.path.join('static/'),
-)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
