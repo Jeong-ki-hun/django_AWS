@@ -94,7 +94,7 @@ for (var i = 0; i < positions.length; i++) {
 
   kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));//마커 클릭 이벤트
 
-  var iwContent = `<div style="padding:5px;"> ${positions[i].title} <br><a href="/ob/shop/congestion/" style="color:blue" target="_blank">혼잡도 보기</a>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+  var iwContent = `<div style="padding:5px;"> ${positions[i].title} <br><a href="/shop/congestion/" style="color:blue" target="_blank">혼잡도 보기</a>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
     iwPosition = new kakao.maps.LatLng(seoul[i].mapy, seoul[i].mapx); //인포윈도우 표시 위치입니다
     iwRemoveable = true;
 
