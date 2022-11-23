@@ -25,7 +25,7 @@ def shop_list(request):
     return render(request, 'ob/index_3.html', {'page_obj' : page_obj})
 
 def map(request):
-    with open('ob/static/json/file_name.json', encoding='utf-8') as json_file:
+    with open('static/json/file_name.json', encoding='utf-8') as json_file:
         js = json.load(json_file)
         js = js['data']
         seoul_t = []
