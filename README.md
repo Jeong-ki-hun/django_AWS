@@ -17,3 +17,5 @@
   ◼ 모바일 웹 개발 : Python Django, Bootstrap
  
   ◼ 모델 개발 : YOLOv5, Tensorflow
+  
+  ◼ 베포 : AWS
