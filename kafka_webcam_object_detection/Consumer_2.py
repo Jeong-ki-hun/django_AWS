@@ -31,8 +31,6 @@ for msg_idx, message in enumerate(consumer):
     img_arr = cv2.rotate(img_arr,cv2.ROTATE_180)
     result = model(img_arr,size=640) # 모델에 카프카로 받아온 실시간 영상의 사진을 넣어
 
-    #result.pandas().xyxy[0]
-    #result.pandas().xyxy[0]
     df = result.pandas().xyxy[0] # 디텍션된 결과값을 따로 저장한후
     person=(df['name']=='person').count() # 사람으로 인식된 검출결과만을 따로 카운트하여 모아 DB에 적재한다
     cur.execute("INSERT INTO ob_streettable (address, count,time) VALUES (%s, %s, )", ('서울특별시 용산구 원효로89길 13-10',str(person)))
